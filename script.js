@@ -1,6 +1,9 @@
 const registerForm = document.getElementById("registerForm");
 const loginForm = document.getElementById("loginForm");
 
+// URL base da API hospedada no Render
+const API_URL = "https://loginbackend-k2f6.onrender.com";
+
 registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
@@ -10,15 +13,19 @@ registerForm.addEventListener("submit", async (e) => {
     password: document.getElementById("regPassword").value
   };
 
-  const response = await fetch("http://127.0.0.1:8000/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(user)
-  });
+  try {
+    const response = await fetch(`${API_URL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(user)
+    });
 
-  const data = await response.json();
-  alert(data.message || data.detail);
-  registerForm.reset();
+    const data = await response.json();
+    alert(data.message || data.detail);
+    registerForm.reset();
+  } catch (error) {
+    alert("Erro ao registrar usuário.");
+  }
 });
 
 loginForm.addEventListener("submit", async (e) => {
@@ -29,13 +36,17 @@ loginForm.addEventListener("submit", async (e) => {
     password: document.getElementById("loginPassword").value
   };
 
-  const response = await fetch("http://127.0.0.1:8000/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(credentials)
-  });
+  try {
+    const response = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials)
+    });
 
-  const data = await response.json();
-  alert(data.message || data.detail);
-  loginForm.reset();
+    const data = await response.json();
+    alert(data.message || data.detail);
+    loginForm.reset();
+  } catch (error) {
+    alert("Erro ao fazer login.");
+  }
 });
